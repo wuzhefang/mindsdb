@@ -1,0 +1,44 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MindsDB 架构指南
+
+## 核心理念：连接、统一、响应
+
+MindsDB 基于三个核心能力构建：
+
+### 连接数据 (Connect)
+- 数据集成处理器位于 [mindsdb/integrations/handlers/](mdc:mindsdb/integrations/handlers/)
+- 支持 200+ 种数据源连接
+- 每个处理器都有独立的目录结构
+
+### 统一数据 (Unify)
+- SQL 解析和执行逻辑在 [mindsdb/api/executor/](mdc:mindsdb/api/executor/)
+- 联邦查询引擎将 SQL 查询转换为对应数据源的原生查询
+- 虚拟表（视图、知识库、ML模型）统一异构数据
+
+### 响应数据 (Respond)
+- 智能代理实现在 [mindsdb/interfaces/agents/](mdc:mindsdb/interfaces/agents/)
+- MCP 服务器在 [mindsdb/api/mcp/](mdc:mindsdb/api/mcp/)
+- 聊天机器人接口在 [mindsdb/interfaces/chatbot/](mdc:mindsdb/interfaces/chatbot/)
+
+## 主要组件
+
+### API 层
+- HTTP API: [mindsdb/api/http/](mdc:mindsdb/api/http/)
+- MySQL 协议: [mindsdb/api/mysql/](mdc:mindsdb/api/mysql/)
+- PostgreSQL 协议: [mindsdb/api/postgres/](mdc:mindsdb/api/postgres/)
+- MongoDB 协议: [mindsdb/api/mongo/](mdc:mindsdb/api/mongo/)
+
+### 接口层
+- 数据库接口: [mindsdb/interfaces/database/](mdc:mindsdb/interfaces/database/)
+- 模型接口: [mindsdb/interfaces/model/](mdc:mindsdb/interfaces/model/)
+- 知识库接口: [mindsdb/interfaces/knowledge_base/](mdc:mindsdb/interfaces/knowledge_base/)
+- 任务调度: [mindsdb/interfaces/jobs/](mdc:mindsdb/interfaces/jobs/)
+
+### 工具和实用程序
+- 缓存系统: [mindsdb/utilities/cache.py](mdc:mindsdb/utilities/cache.py)
+- 认证系统: [mindsdb/utilities/auth.py](mdc:mindsdb/utilities/auth.py)
+- 配置管理: [mindsdb/utilities/config.py](mdc:mindsdb/utilities/config.py)

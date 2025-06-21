@@ -1,0 +1,176 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MindsDB 故障排除和调试指南
+
+## 日志系统
+
+### 日志配置
+- 主要日志配置在 [mindsdb/utilities/log.py](mdc:mindsdb/utilities/log.py)
+- 支持多种日志级别：DEBUG, INFO, WARNING, ERROR, CRITICAL
+- 日志输出到控制台和文件
+
+### 日志查看
+```bash
+# 查看实时日志
+tail -f ~/.mindsdb/logs/mindsdb.log
+
+# 查看错误日志
+grep "ERROR" ~/.mindsdb/logs/mindsdb.log
+
+# 查看特定组件日志
+grep "handler" ~/.mindsdb/logs/mindsdb.log
+```
+
+## 常见问题诊断
+
+### 连接问题
+1. **数据库连接失败**
+   - 检查连接参数配置
+   - 验证网络连接和防火墙设置
+   - 查看处理器日志和错误信息
+
+2. **API 连接超时**
+   - 检查服务器状态和资源使用
+   - 验证客户端配置
+   - 调整超时设置
+
+### 性能问题
+1. **查询执行缓慢**
+   - 启用查询日志和性能分析
+   - 检查数据源性能
+   - 优化查询语句
+
+2. **内存使用过高**
+   - 监控内存使用情况
+   - 检查是否有内存泄漏
+   - 调整缓存配置
+
+### 集成处理器问题
+1. **处理器加载失败**
+   - 检查依赖包安装
+   - 验证处理器配置
+   - 查看初始化错误日志
+
+2. **数据同步问题**
+   - 检查数据源权限
+   - 验证数据格式和类型
+   - 查看同步任务状态
+
+## 调试工具和技巧
+
+### 开发环境调试
+```python
+# 启用调试模式
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+# 使用断点调试
+import pdb; pdb.set_trace()
+
+# 性能分析
+import cProfile
+cProfile.run('your_function()')
+```
+
+### 生产环境监控
+- 使用 [mindsdb/metrics/](mdc:mindsdb/metrics/) 模块监控系统状态
+- 配置告警和通知机制
+- 定期检查系统健康状态
+
+## 错误处理模式
+
+### 异常捕获和处理
+```python
+import traceback
+from mindsdb.utilities.log import log
+
+try:
+    # 执行操作
+    result = perform_operation()
+except Exception as e:
+    log.error(f"操作失败: {e}")
+    log.error(f"详细错误: {traceback.format_exc()}")
+    # 适当的错误处理逻辑
+```
+
+### 优雅降级
+- 实现备用方案
+- 提供有意义的错误信息
+- 保证系统稳定性
+
+## 测试和验证
+
+### 单元测试调试
+```bash
+# 运行特定测试
+pytest tests/unit/test_specific.py -v
+
+# 运行测试并显示详细输出
+pytest tests/unit/test_specific.py -s -v
+
+# 使用调试器运行测试
+pytest tests/unit/test_specific.py --pdb
+```
+
+### 集成测试调试
+- 使用测试数据库和环境
+- 模拟外部依赖
+- 验证端到端流程
+
+## 性能分析
+
+### 查询性能分析
+- 启用 SQL 查询日志
+- 使用 EXPLAIN 分析查询计划
+- 监控查询执行时间
+
+### 系统资源监控
+```bash
+# CPU 和内存使用
+top -p $(pgrep -f mindsdb)
+
+# 网络连接状态
+netstat -an | grep :47334
+
+# 磁盘 I/O 监控
+iostat -x 1
+```
+
+## 故障恢复
+
+### 数据恢复
+- 定期备份配置和数据
+- 实现数据恢复流程
+- 验证备份完整性
+
+### 服务恢复
+- 自动重启机制
+- 健康检查和故障转移
+- 服务状态监控
+
+## 社区支持
+
+### 问题报告
+- 使用 GitHub Issues 报告问题
+- 提供详细的错误信息和日志
+- 包含重现步骤和环境信息
+
+### 获取帮助
+- 查看 [文档](https://docs.mindsdb.com)
+- 加入 [Slack 社区](https://mindsdb.com/joincommunity)
+- 参与 [GitHub 讨论](https://github.com/mindsdb/mindsdb/discussions)
+
+## 最佳实践
+
+### 预防性维护
+- 定期更新依赖包
+- 监控系统性能指标
+- 实施自动化测试
+
+### 故障预防
+- 实现输入验证
+- 使用连接池和重试机制
+- 配置适当的超时设置

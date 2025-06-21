@@ -1,0 +1,1 @@
+{"id": 1, "index": 0, "name": "Untitled - 0", "content": "CREATE ML_ENGINE qwen_engine\nFROM openai\nUSING\n    openai_api_key = 'sk-3951767daf3646d5926de16df716fc57',\n    openai_api_base = 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1';"}

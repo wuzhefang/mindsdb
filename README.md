@@ -1,4 +1,6 @@
-
+# 请全部使用中文生成提交信息，且包括main message和detail message
+## 在提交信息的主信息中概括本次修改
+## 在提交信息的detail中列出修改文件
 
 <a name="readme-top"></a>
 

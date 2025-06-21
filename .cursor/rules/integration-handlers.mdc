@@ -1,0 +1,136 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MindsDB 集成处理器开发指南
+
+## 处理器架构
+
+### 基础结构
+所有集成处理器位于 [mindsdb/integrations/handlers/](mdc:mindsdb/integrations/handlers/) 目录下。
+
+### 处理器类型
+1. **数据处理器** - 连接各种数据源（数据库、API、文件等）
+2. **AI 引擎处理器** - 集成各种 AI/ML 服务
+3. **应用处理器** - 连接 SaaS 应用和服务
+
+### 标准目录结构
+```
+handler_name/
+├── __init__.py          # 处理器入口点
+├── handler.py           # 核心处理器实现
+├── connection_args.py   # 连接参数定义
+├── README.md           # 使用文档
+├── requirements.txt    # 依赖包
+└── tests/              # 测试文件
+    └── test_handler.py
+```
+
+## 实现规范
+
+### 基础处理器类
+- 数据处理器继承自 `DatabaseHandler`
+- AI 处理器继承自 `BaseMLEngine`
+- 应用处理器继承自 `APIHandler`
+
+### 必需方法实现
+```python
+class MyHandler(DatabaseHandler):
+    def __init__(self, name, connection_data):
+        # 初始化逻辑
+        
+    def connect(self):
+        # 建立连接
+        
+    def disconnect(self):
+        # 断开连接
+        
+    def check_connection(self):
+        # 检查连接状态
+        
+    def native_query(self, query):
+        # 执行原生查询
+        
+    def query(self, query):
+        # 执行 SQL 查询
+```
+
+### 连接参数定义
+在 `connection_args.py` 中定义连接参数：
+```python
+from mindsdb.integrations.libs.const import HANDLER_CONNECTION_ARG_TYPE as ARG_TYPE
+
+connection_args = OrderedDict(
+    host={
+        'type': ARG_TYPE.STR,
+        'description': '主机地址',
+        'required': True
+    },
+    port={
+        'type': ARG_TYPE.INT,
+        'description': '端口号',
+        'required': False
+    }
+)
+```
+
+## 错误处理
+
+### 异常类型
+- `ConnectionError`: 连接失败
+- `AuthenticationError`: 认证失败
+- `QueryError`: 查询执行错误
+- `ValidationError`: 参数验证错误
+
+### 错误处理模式
+```python
+try:
+    # 操作代码
+except Exception as e:
+    logger.error(f"操作失败: {e}")
+    raise HandlerError(f"详细错误信息: {e}")
+```
+
+## 测试要求
+
+### 测试文件结构
+- 单元测试：`tests/test_handler.py`
+- 集成测试：测试实际连接和查询
+
+### 测试覆盖范围
+- 连接建立和断开
+- 参数验证
+- 查询执行
+- 错误处理
+
+## 文档要求
+
+### README.md 内容
+1. 处理器描述和用途
+2. 安装和配置说明
+3. 使用示例
+4. 支持的操作列表
+5. 已知限制和注意事项
+
+### 代码注释
+- 所有公共方法必须有文档字符串
+- 复杂逻辑需要行内注释
+- 使用 Google 风格的文档字符串
+
+## 性能优化
+
+### 连接管理
+- 实现连接池
+- 支持连接复用
+- 优雅处理连接超时
+
+### 查询优化
+- 支持查询缓存
+- 实现分页查询
+- 优化大数据集处理
+
+### 内存管理
+- 及时释放资源
+- 避免内存泄漏
+- 处理大结果集时使用流式处理

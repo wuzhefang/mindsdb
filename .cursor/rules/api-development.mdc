@@ -1,0 +1,142 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MindsDB API 开发指南
+
+## API 架构概览
+
+MindsDB 支持多种 API 协议，位于 [mindsdb/api/](mdc:mindsdb/api/) 目录：
+
+### 支持的协议
+- **HTTP REST API**: [mindsdb/api/http/](mdc:mindsdb/api/http/)
+- **MySQL 协议**: [mindsdb/api/mysql/](mdc:mindsdb/api/mysql/)
+- **PostgreSQL 协议**: [mindsdb/api/postgres/](mdc:mindsdb/api/postgres/)
+- **MongoDB 协议**: [mindsdb/api/mongo/](mdc:mindsdb/api/mongo/)
+- **MCP 协议**: [mindsdb/api/mcp/](mdc:mindsdb/api/mcp/)
+
+## HTTP API 开发
+
+### 路由结构
+- 主路由定义在 [mindsdb/api/http/namespaces/](mdc:mindsdb/api/http/namespaces/)
+- 使用 Flask-RESTX 框架
+- 遵循 RESTful 设计原则
+
+### 端点命名约定
+```
+GET    /api/projects              # 获取资源列表
+GET    /api/projects/{id}         # 获取单个资源
+POST   /api/projects              # 创建资源
+PUT    /api/projects/{id}         # 更新资源
+DELETE /api/projects/{id}         # 删除资源
+```
+
+### 响应格式
+```json
+{
+    "data": {},           // 响应数据
+    "success": true,      // 操作状态
+    "message": "",        // 状态消息
+    "error": null         // 错误信息
+}
+```
+
+### 错误处理
+- 使用标准 HTTP 状态码
+- 返回结构化错误信息
+- 记录详细错误日志
+
+## SQL 协议开发
+
+### MySQL 协议
+- 实现在 [mindsdb/api/mysql/](mdc:mindsdb/api/mysql/)
+- 支持标准 MySQL 客户端连接
+- 实现核心 SQL 语句解析和执行
+
+### PostgreSQL 协议
+- 实现在 [mindsdb/api/postgres/](mdc:mindsdb/api/postgres/)
+- 兼容 PostgreSQL 客户端工具
+- 支持扩展的数据类型
+
+### 通用 SQL 处理
+- SQL 解析使用 [mindsdb/api/executor/](mdc:mindsdb/api/executor/)
+- 查询计划和优化
+- 结果集格式化
+
+## MCP 协议开发
+
+### MCP 服务器
+- 实现在 [mindsdb/api/mcp/](mdc:mindsdb/api/mcp/)
+- 支持 Model Context Protocol
+- 与 AI 应用和工具集成
+
+### 工具和资源
+- 定义可用的工具和资源
+- 实现工具调用处理
+- 管理上下文和会话
+
+## 认证和授权
+
+### 认证机制
+- JWT Token 认证
+- API Key 认证
+- 数据库用户认证
+
+### 权限控制
+- 基于角色的访问控制 (RBAC)
+- 资源级权限管理
+- 审计日志记录
+
+## 性能优化
+
+### 缓存策略
+- 查询结果缓存
+- 元数据缓存
+- 连接池管理
+
+### 异步处理
+- 长时间运行的查询异步执行
+- 任务队列管理
+- 进度跟踪和通知
+
+## 监控和日志
+
+### 请求日志
+- 记录所有 API 请求
+- 包含请求时间、用户、操作等信息
+- 支持日志级别配置
+
+### 性能监控
+- 响应时间监控
+- 资源使用情况
+- 错误率统计
+
+### 健康检查
+- API 健康状态端点
+- 依赖服务状态检查
+- 自动故障恢复
+
+## 测试规范
+
+### API 测试
+- 单元测试覆盖所有端点
+- 集成测试验证端到端流程
+- 性能测试确保响应时间
+
+### 协议测试
+- 使用标准客户端工具测试
+- 验证协议兼容性
+- 测试边界条件和错误场景
+
+## 文档要求
+
+### API 文档
+- 使用 OpenAPI/Swagger 规范
+- 包含请求/响应示例
+- 提供交互式 API 文档
+
+### 协议文档
+- 支持的 SQL 语句列表
+- 协议特性和限制说明
+- 客户端配置指南

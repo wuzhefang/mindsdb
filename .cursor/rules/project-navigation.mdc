@@ -1,0 +1,156 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# MindsDB 项目导航指南
+
+## 项目根目录结构
+
+### 核心目录
+- [mindsdb/](mdc:mindsdb/) - 主要源代码目录
+- [tests/](mdc:tests/) - 测试代码目录
+- [docs/](mdc:docs/) - 文档目录
+- [requirements/](mdc:requirements/) - 依赖管理目录
+- [docker/](mdc:docker/) - Docker 相关配置
+
+### 配置文件
+- [README.md](mdc:README.md) - 项目介绍和快速开始
+- [CONTRIBUTING.md](mdc:CONTRIBUTING.md) - 贡献指南
+- [LICENSE](mdc:LICENSE) - 开源许可证
+- [Makefile](mdc:Makefile) - 构建和开发命令
+
+## 源代码组织
+
+### API 层 ([mindsdb/api/](mdc:mindsdb/api/))
+```
+api/
+├── http/           # HTTP REST API
+├── mysql/          # MySQL 协议实现
+├── postgres/       # PostgreSQL 协议实现
+├── mongo/          # MongoDB 协议实现
+├── mcp/            # Model Context Protocol
+├── executor/       # SQL 执行引擎
+└── common/         # 通用 API 组件
+```
+
+### 集成层 ([mindsdb/integrations/](mdc:mindsdb/integrations/))
+```
+integrations/
+├── handlers/       # 200+ 集成处理器
+├── libs/           # 共享库和工具
+└── utilities/      # 集成相关工具
+```
+
+### 接口层 ([mindsdb/interfaces/](mdc:mindsdb/interfaces/))
+```
+interfaces/
+├── agents/         # AI 代理管理
+├── database/       # 数据库接口
+├── model/          # ML 模型接口
+├── knowledge_base/ # 知识库管理
+├── jobs/           # 任务调度
+├── storage/        # 存储管理
+└── triggers/       # 触发器系统
+```
+
+### 工具层 ([mindsdb/utilities/](mdc:mindsdb/utilities/))
+```
+utilities/
+├── cache.py        # 缓存系统
+├── auth.py         # 认证授权
+├── config.py       # 配置管理
+├── log.py          # 日志系统
+├── profiler/       # 性能分析
+└── hooks/          # 钩子系统
+```
+
+## 测试组织
+
+### 测试目录结构 ([tests/](mdc:tests/))
+```
+tests/
+├── unit/           # 单元测试
+│   ├── api/        # API 测试
+│   ├── executor/   # 执行器测试
+│   ├── handlers/   # 处理器测试
+│   └── interfaces/ # 接口测试
+├── integration/    # 集成测试
+│   ├── flows/      # 工作流测试
+│   └── tutorials/  # 教程测试
+└── data/           # 测试数据
+```
+
+### 测试文件命名
+- 单元测试：`test_*.py`
+- 集成测试：`test_*_integration.py`
+- 性能测试：`test_*_performance.py`
+
+## 文档组织
+
+### 文档结构 ([docs/](mdc:docs/))
+```
+docs/
+├── integrations/   # 集成文档
+├── mindsdb_sql/    # SQL 语法文档
+├── use-cases/      # 用例文档
+├── tutorials/      # 教程文档
+├── setup/          # 安装配置文档
+└── assets/         # 文档资源
+```
+
+## 快速导航
+
+### 查找特定功能
+1. **数据连接器** → [mindsdb/integrations/handlers/](mdc:mindsdb/integrations/handlers/)
+2. **API 端点** → [mindsdb/api/http/namespaces/](mdc:mindsdb/api/http/namespaces/)
+3. **SQL 执行** → [mindsdb/api/executor/](mdc:mindsdb/api/executor/)
+4. **AI 代理** → [mindsdb/interfaces/agents/](mdc:mindsdb/interfaces/agents/)
+5. **配置管理** → [mindsdb/utilities/config.py](mdc:mindsdb/utilities/config.py)
+
+### 查找测试文件
+1. **API 测试** → [tests/unit/api/](mdc:tests/unit/api/)
+2. **处理器测试** → [tests/unit/handlers/](mdc:tests/unit/handlers/)
+3. **集成测试** → [tests/integration/](mdc:tests/integration/)
+
+### 查找文档
+1. **集成指南** → [docs/integrations/](mdc:docs/integrations/)
+2. **SQL 语法** → [docs/mindsdb_sql/](mdc:docs/mindsdb_sql/)
+3. **用例示例** → [docs/use-cases/](mdc:docs/use-cases/)
+
+## 开发工作流
+
+### 新功能开发
+1. 在 [mindsdb/](mdc:mindsdb/) 下创建相应模块
+2. 在 [tests/unit/](mdc:tests/unit/) 下添加单元测试
+3. 在 [tests/integration/](mdc:tests/integration/) 下添加集成测试
+4. 更新相关文档
+
+### 新集成开发
+1. 在 [mindsdb/integrations/handlers/](mdc:mindsdb/integrations/handlers/) 下创建处理器
+2. 实现标准接口方法
+3. 添加测试和文档
+4. 更新 [default_handlers.txt](mdc:default_handlers.txt)
+
+### Bug 修复
+1. 在相应模块中定位和修复问题
+2. 添加或更新测试用例
+3. 验证修复效果
+4. 更新相关文档
+
+## 代码搜索技巧
+
+### 查找实现
+- 搜索类名或函数名
+- 查看 `__init__.py` 文件了解模块结构
+- 使用 IDE 的"转到定义"功能
+
+### 查找用法
+- 搜索导入语句
+- 查看测试文件了解使用方式
+- 检查相关的示例和文档
+
+### 查找配置
+- 检查 [mindsdb/utilities/config.py](mdc:mindsdb/utilities/config.py)
+- 查看环境变量设置
+- 检查默认配置文件
